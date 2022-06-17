@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI items rest
+
+[Service]
+Environment=DATABASE_URL=postgres://dawid:pass123@localhost:5432/dawid
+ExecStart=/var/www/html/items-rest/venv/bin/uwsgi --master --emperor /var/www/html/items-rest/uwsgi.ini --die-on-term --uid dawid --gid dawid --logto /var/www/html/items-rest/log/emperor.log
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
