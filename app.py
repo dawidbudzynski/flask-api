@@ -6,7 +6,7 @@ from flask_restful import Api
 
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
-from resources.user import UserRegister
+from resources.user import UserRegister, User
 from security import authenticate, identity
 
 database_url = os.getenv("DATABASE_URL", 'sqlite:///data.db')
@@ -27,6 +27,7 @@ api.add_resource(StoreList, '/stores')
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister, '/register')
+api.add_resource(User, '/user/<int:user_id>')
 
 if __name__ == '__main__':
     from db import db
