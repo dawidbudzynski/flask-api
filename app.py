@@ -6,7 +6,7 @@ from flask_restful import Api
 
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
-from resources.user import UserRegister, User, UserLogin
+from resources.user import UserRegister, User, UserLogin, TokenRefresh
 
 database_url = os.getenv("DATABASE_URL", 'sqlite:///data.db')
 if database_url.startswith("postgres://"):
@@ -36,6 +36,7 @@ api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister, '/register')
 api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(UserLogin, '/login')
+api.add_resource(TokenRefresh, '/refresh')
 
 if __name__ == '__main__':
     from db import db
