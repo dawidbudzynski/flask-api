@@ -3,8 +3,10 @@ import os
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
+from marshmallow import ValidationError
 
 from blacklist import BLACKLIST
+from ma import ma
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, UserLogout
@@ -21,6 +23,17 @@ app.config["JWT_BLACKLIST_ENABLED"] = True
 app.config["JWT_BLACKLIST_TOKEN_CHECK"] = ["access", "refresh"]
 app.secret_key = "jose"
 api = Api(app)
+
+
+@app.errorhandler(ValidationError)
+def handle_marshmallow_validation(err):
+    return jsonify(err.messages), 400
+
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
 
 jwt = JWTManager(app)
 
@@ -59,4 +72,5 @@ if __name__ == "__main__":
     from db import db
 
     db.init_app(app)
+    ma.init_app(app)
     app.run(port=5000, debug=True)
